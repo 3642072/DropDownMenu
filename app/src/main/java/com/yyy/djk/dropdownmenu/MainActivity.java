@@ -22,8 +22,19 @@ import butterknife.InjectView;
 
 public class MainActivity extends AppCompatActivity {
 
-    @InjectView(R.id.dropDownMenu) DropDownMenu mDropDownMenu;
+    @InjectView(R.id.dropDownMenu)
+    DropDownMenu mDropDownMenu;
     private String headers[] = {"城市", "年龄", "性别", "星座"};
+    private int[] select = {
+            R.mipmap.drop_down_selected_icon,
+            R.mipmap.drop_down_selected_icon,
+            R.mipmap.drop_down_selected_icon,
+            R.drawable.arrow_up};
+    private int[] unselect = {
+            R.mipmap.drop_down_unselected_icon,
+            R.mipmap.drop_down_unselected_icon,
+            R.mipmap.drop_down_unselected_icon,
+            R.drawable.arrow_down};
     private List<View> popupViews = new ArrayList<>();
 
     private GirdDropDownAdapter cityAdapter;
@@ -129,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         //init dropdownview
-        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
+        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView, select, unselect);
     }
 
     @Override
