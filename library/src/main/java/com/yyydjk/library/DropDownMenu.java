@@ -44,15 +44,15 @@ public class DropDownMenu extends LinearLayout {
     private int maskColor = 0x88888888;
     //tab字体大小
     private int menuTextSize = 14;
-
     //tab选中图标
     private int menuSelectedIcon;
     private int[] menuSelectedIcons;
     //tab未选中图标
     private int menuUnselectedIcon;
     private int[] menuUnselectedIcons;
+    // 图标类型
     private boolean icon2Type;
-
+    private OnItemClickListener listener;
 
     private float menuHeightPercent = 0.5f;
 
@@ -174,6 +174,10 @@ public class DropDownMenu extends LinearLayout {
 
     }
 
+    public void setItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     private void addTab(@NonNull List<String> tabTexts, int i) {
         final TextView tab = new TextView(getContext());
         tab.setSingleLine();
@@ -191,13 +195,16 @@ public class DropDownMenu extends LinearLayout {
             @Override
             public void onClick(View v) {
                 switchMenu(tab);
+                if (listener != null) {
+                    listener.onItemClick(current_tab_position / 2, isShowing());
+                }
             }
         });
         tabMenuView.addView(tab);
         //添加分割线
         if (i < tabTexts.size() - 1) {
             View view = new View(getContext());
-            LinearLayout.LayoutParams layoutParams =  new LayoutParams(dpTpPx(0.5f), ViewGroup.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams layoutParams = new LayoutParams(dpTpPx(0.5f), ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.topMargin = dpTpPx(10);
             layoutParams.bottomMargin = dpTpPx(10);
             view.setLayoutParams(layoutParams);
@@ -287,5 +294,9 @@ public class DropDownMenu extends LinearLayout {
     public int dpTpPx(float value) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, dm) + 0.5);
+    }
+
+    public static interface OnItemClickListener {
+        void onItemClick(int position, boolean select);
     }
 }
