@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yyydjk.library.DropDownMenu;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             R.mipmap.drop_down_unselected_icon,
             R.mipmap.drop_down_unselected_icon,
             R.drawable.arrow_down};
+    private boolean[] showPop = {true,true,true,false};
     private List<View> popupViews = new ArrayList<>();
 
     private GirdDropDownAdapter cityAdapter;
@@ -138,8 +140,14 @@ public class MainActivity extends AppCompatActivity {
         contentView.setText("内容显示区域");
         contentView.setGravity(Gravity.CENTER);
         contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-
+        mDropDownMenu.setItemClickListener(new DropDownMenu.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, boolean select) {
+                Toast.makeText(MainActivity.this, position + ":" + select, Toast.LENGTH_SHORT).show();
+            }
+        });
         //init dropdownview
+        mDropDownMenu.setShowPop(showPop);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView, select, unselect);
     }
 

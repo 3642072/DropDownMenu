@@ -52,6 +52,9 @@ public class DropDownMenu extends LinearLayout {
     private int[] menuUnselectedIcons;
     // 图标类型
     private boolean icon2Type;
+    // 扩展类型
+    private boolean[] showPop;
+    // 扩展接口
     private OnItemClickListener listener;
 
     private float menuHeightPercent = 0.5f;
@@ -174,6 +177,10 @@ public class DropDownMenu extends LinearLayout {
 
     }
 
+    public void setShowPop(boolean[] showPop) {
+        this.showPop = showPop;
+    }
+
     public void setItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -266,17 +273,18 @@ public class DropDownMenu extends LinearLayout {
         for (int i = 0; i < tabMenuView.getChildCount(); i = i + 2) {
             if (target == tabMenuView.getChildAt(i)) {
                 if (current_tab_position == i) {
-                    closeMenu();
+                    if (showPop == null || showPop[i / 2]) closeMenu();
                 } else {
-                    if (current_tab_position == -1) {
-                        popupMenuViews.setVisibility(View.VISIBLE);
-                        popupMenuViews.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
-                        maskView.setVisibility(VISIBLE);
-                        maskView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
-                        popupMenuViews.getChildAt(i / 2).setVisibility(View.VISIBLE);
-                    } else {
-                        popupMenuViews.getChildAt(i / 2).setVisibility(View.VISIBLE);
-                    }
+                    if (showPop == null || showPop[i / 2])
+                        if (current_tab_position == -1) {
+                            popupMenuViews.setVisibility(View.VISIBLE);
+                            popupMenuViews.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
+                            maskView.setVisibility(VISIBLE);
+                            maskView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
+                            popupMenuViews.getChildAt(i / 2).setVisibility(View.VISIBLE);
+                        } else {
+                            popupMenuViews.getChildAt(i / 2).setVisibility(View.VISIBLE);
+                        }
                     current_tab_position = i;
                     ((TextView) tabMenuView.getChildAt(i)).setTextColor(textSelectedColor);
                     ((TextView) tabMenuView.getChildAt(i)).setCompoundDrawablesWithIntrinsicBounds(null, null,
